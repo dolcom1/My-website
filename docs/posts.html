@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Posts - My Y2K Blog</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        .post {
+            background: #fff;
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .upload-form {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .upload-form input, .upload-form textarea {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Posts</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">ME</a></li>
+                <li><a href="about.html">关于</a></li>
+                <li><a href="posts.html">પોસ્ટ્સ</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="blue-box">
+            <div class="upload-form">
+                <h2>Upload Image</h2>
+                <input type="file" id="imageUpload" accept="image/*">
+                <input type="text" id="imageTitle" placeholder="Image Title">
+                <textarea id="imageDescription" placeholder="Image Description"></textarea>
+                <input type="password" id="passwordInput" placeholder="Enter Password">
+                <button id="submitImage">Submit</button>
+            </div>
+            <div id="postContainer" class="container"></div> <!-- Container for displaying posts -->
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My Y2K Blog. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const correctPassword = 'Gumbert1'; // Set the correct password
+
+        // JavaScript to handle image uploads
+        document.getElementById('submitImage').addEventListener('click', function() {
+            const imageInput = document.getElementById('imageUpload');
+            const titleInput = document.getElementById('imageTitle');
+            const descriptionInput = document.getElementById('imageDescription');
+            const passwordInput = document.getElementById('passwordInput');
+            const postContainer = document.getElementById('postContainer');
+
+            // Check if password is correct
+            if (passwordInput.value === correctPassword) {
+                if (imageInput.files.length > 0 && titleInput.value.trim() && descriptionInput.value.trim()) {
+                    const file = imageInput.files[0];
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const post = document.createElement('div');
+                        post.className = 'post';
+                        post.innerHTML = `
+                            <h2>${titleInput.value}</h2>
+                            <img src="${e.target.result}" alt="${titleInput.value}" style="max-width: 100%;">
+                            <p>${descriptionInput.value}</p>
+                            <p><small>Posted on: ${new Date().toLocaleString()}</small></p>
+                        `;
+                        postContainer.appendChild(post);
+                        
+                        // Clear the inputs
+                        imageInput.value = '';
+                        titleInput.value = '';
+                        descriptionInput.value = '';
+                        passwordInput.value = ''; // Clear the password field
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert('Please fill in all fields and select an image.');
+                }
+            } else {
+                alert('Incorrect password. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>
